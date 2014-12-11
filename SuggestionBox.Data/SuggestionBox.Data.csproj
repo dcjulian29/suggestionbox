@@ -61,6 +61,7 @@
     <Compile Include="Entities\HomePageVisit.cs" />
     <Compile Include="Entities\Question.cs" />
     <Compile Include="Entities\QuestionLike.cs" />
+    <Compile Include="Mappings\CommentLikeMap.cs" />
     <Compile Include="Mappings\CommentMap.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
