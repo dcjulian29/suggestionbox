@@ -64,6 +64,7 @@
     <Compile Include="Mappings\CommentLikeMap.cs" />
     <Compile Include="Mappings\CommentMap.cs" />
     <Compile Include="Mappings\HomePageVisitMap.cs" />
+    <Compile Include="Mappings\QuestionMap.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
