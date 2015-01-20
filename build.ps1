@@ -12,8 +12,8 @@ Properties {
   $build_configuration = "Release"
   $solution_file = "$base_directory\$projectName.sln"
 
-  $build_number = Invoke-Command -ScriptBlock { git rev-list HEAD --count }
-  $version = "$(Get-Date -Format 'yyyy.MM.dd').$build_number"
+  $lasttag = Invoke-Command -ScriptBlock { git describe --tags --abbrev=0 }
+  $version = if ($lasttag -eq $null) { "0.0.0" } else { $lasttag }
 }
 
 Task VsVar32 {
@@ -37,18 +37,21 @@ Task VsVar32 {
         $batch_file = "$vs12_dir\$vsvar32"
     }
     
-    $cmd = "`"$batch_file`" & set"
-    cmd /c "$cmd" | Foreach-Object `
-    {
-        $p, $v = $_.split('=')
-        Set-Item -path env:$p -value $v
+    if ($batch_file) {
+        $cmd = "`"$batch_file`" & set"
+        cmd /c "$cmd" | Foreach-Object `
+        {
+            $p, $v = $_.split('=')
+            Set-Item -path env:$p -value $v
+        }
+    } else {
+        Write-Warning "Vsvar32.bat was not found!"
     }
 }
 
 Task Clean -depends VsVar32 {
     Remove-Item -Force -Recurse $build_directory -ErrorAction SilentlyContinue | Out-Null
     exec { msbuild /m /p:Configuration="$build_configuration" /t:clean "$solution_file" }
-
 }
 
 Task Init -depends Clean {
@@ -77,8 +80,29 @@ using System.Runtime.InteropServices;
 "@
 }
 
-Task Compile -depends Version {
+Task PackageClean {
+    Remove-Item -Force -Recurse $package_directory -ErrorAction SilentlyContinue | Out-Null
+}
+
+Task PackageRestore {
     exec { nuget restore "$solution_file" }
+}
+
+Task CopySQLiteInterop -depends Init, PackageRestore {
+    New-Item "$release_directory\x64" -ItemType Directory | Out-Null
+    New-Item "$release_directory\x86" -ItemType Directory | Out-Null
+
+    $sqlite = "System.Data.SQLite.Core.*"
+    $library_directory = (Get-ChildItem -Path $package_directory -Filter $sqlite).FullName `
+        | Sort-Object | Select-Object -Last 1
+    $library_directory = (Get-ChildItem -Path "$library_directory\build").FullName `
+        | Sort-Object | Select-Object -Last 1
+
+    Copy-Item "$library_directory\x64\*" "$release_directory\x64\"
+    Copy-Item "$library_directory\x86\*" "$release_directory\x86\"
+}
+
+Task Compile -depends Version {
     exec { 
         msbuild /m /p:BuildInParralel=true /p:Platform="Any CPU" `
             /p:Configuration="$build_configuration" `
