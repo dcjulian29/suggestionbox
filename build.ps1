@@ -12,8 +12,8 @@ Properties {
   $build_configuration = "Release"
   $solution_file = "$base_directory\$projectName.sln"
 
-  $build_number = Invoke-Command -ScriptBlock { git rev-list HEAD --count }
-  $version = "$(Get-Date -Format 'yyyy.MM.dd').$build_number"
+  $lasttag = Invoke-Command -ScriptBlock { git describe --tags --abbrev=0 }
+  $version = if ($lasttag -eq $null) { "0.0.0" } else { $lasttag }
 }
 
 Task VsVar32 {
