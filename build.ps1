@@ -37,18 +37,21 @@ Task VsVar32 {
         $batch_file = "$vs12_dir\$vsvar32"
     }
     
-    $cmd = "`"$batch_file`" & set"
-    cmd /c "$cmd" | Foreach-Object `
-    {
-        $p, $v = $_.split('=')
-        Set-Item -path env:$p -value $v
+    if ($batch_file) {
+        $cmd = "`"$batch_file`" & set"
+        cmd /c "$cmd" | Foreach-Object `
+        {
+            $p, $v = $_.split('=')
+            Set-Item -path env:$p -value $v
+        }
+    } else {
+        Write-Warning "Vsvar32.bat was not found!"
     }
 }
 
 Task Clean -depends VsVar32 {
     Remove-Item -Force -Recurse $build_directory -ErrorAction SilentlyContinue | Out-Null
     exec { msbuild /m /p:Configuration="$build_configuration" /t:clean "$solution_file" }
-
 }
 
 Task Init -depends Clean {
