@@ -71,8 +71,14 @@
     <Compile Include="Mappings\QuestionLikeMap.cs" />
     <Compile Include="Mappings\QuestionMap.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Repositories\CommentLikeRepository.cs" />
+    <Compile Include="Repositories\CommentRepository.cs" />
+    <Compile Include="Repositories\HomePageVisitRepository.cs" />
+    <Compile Include="Repositories\QuestionLikeRepository.cs" />
+    <Compile Include="Repositories\QuestionRepository.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
