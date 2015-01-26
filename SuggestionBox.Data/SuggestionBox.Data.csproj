@@ -59,6 +59,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Database.cs" />
     <Compile Include="Entities\Comment.cs" />
     <Compile Include="Entities\CommentLike.cs" />
     <Compile Include="Entities\HomePageVisit.cs" />
