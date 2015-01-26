@@ -11,19 +11,22 @@ namespace SuggestionBox.Data.Entities
     /// </summary>
     public class Question : Entity
     {
-        private static Common.Logging.ILog _log = Common.Logging.LogManager.GetCurrentClassLogger();
+        private static Common.Logging.ILog _log = Common.Logging.LogManager.GetLogger<Question>();
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="Question"/> class.
+        /// Initializes a new instance of the <see cref="Question"/> class
         /// </summary>
         // ReSharper disable DoNotCallOverridableMethodsInConstructor
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors", Justification = "Entities Always Have Virtual Members")]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage(
+            "Microsoft.Usage",
+            "CA2214:DoNotCallOverridableMethodsInConstructors",
+            Justification = "Entities Always Have Virtual Members")]
         public Question()
         {
-            this.Comments = new List<Comment>();
-            this.Active = true;
-            this.Liked = 0;
-            this.WhenPosted = DateTime.Now;
+            Comments = new List<Comment>();
+            Active = true;
+            Liked = 0;
+            WhenPosted = DateTime.Now;
         }
 
         /// <summary>

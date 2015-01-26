@@ -17,9 +17,9 @@ namespace SuggestionBox.Data.Entities
             Justification = "Entities Always Have Virtual Members")]
         public Comment()
         {
-            this.Blocked = false;
-            this.Liked = 0;
-            this.WhenPosted = DateTime.Now;
+            Blocked = false;
+            Liked = 0;
+            WhenPosted = DateTime.Now;
         }
 
         /// <summary>
