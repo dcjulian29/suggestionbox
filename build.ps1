@@ -112,17 +112,19 @@ Task Compile -depends Version {
 
 Task Test -depends UnitTest
 
-Task UnitTest -depends Compile {
-    if ((Get-ChildItem -Path $package_directory -Filter "xunit.runners.*").Count -eq 0) {
+Task xUnit {
+    if ((Get-ChildItem -Path $package_directory -Filter "xunit.runner.console.*").Count -eq 0) {
         Push-Location $package_directory
-        exec { nuget install xunit.runners }
+        exec { nuget install xunit.runner.console }
         Pop-Location
     }
 
-    $xunit = Get-ChildItem -Path $package_directory -Filter "xunit.runners.*" `
+    $xunit = Get-ChildItem -Path $package_directory -Filter "xunit.runner.console.*" `
         | select -Last 1 -ExpandProperty FullName
-    $xunit = "$xunit\tools\xunit.console.clr4.exe"
+    $global:xunit = "$xunit\tools\xunit.console.exe"
+}
 
+Task UnitTest -depends Compile,xUnit {
     if (Test-Path $xunit) {
         exec { & $xunit "$release_directory\UnitTests.dll" }
     } else {
