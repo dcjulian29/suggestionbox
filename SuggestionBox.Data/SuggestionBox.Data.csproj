@@ -57,12 +57,13 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
-    <Reference Include="ToolKit, Version=2015.1.25.110, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="ToolKit, Version=2015.3.18.1, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\ToolKit.2015.1.25.1\lib\net40\ToolKit.dll</HintPath>
+      <HintPath>..\packages\ToolKit.2015.3.18.1\lib\net40\ToolKit.dll</HintPath>
     </Reference>
-    <Reference Include="ToolKit.Data.NHibernate">
-      <HintPath>..\packages\ToolKit.Data.NHibernate.2015.1.25.1\lib\net40\ToolKit.Data.NHibernate.dll</HintPath>
+    <Reference Include="ToolKit.Data.NHibernate, Version=2015.3.18.1, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\ToolKit.Data.NHibernate.2015.3.18.1\lib\net45\ToolKit.Data.NHibernate.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
