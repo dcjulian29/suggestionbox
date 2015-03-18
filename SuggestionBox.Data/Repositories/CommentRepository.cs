@@ -1,4 +1,5 @@
 ﻿using SuggestionBox.Data.Entities;
+using ToolKit.Data;
 using ToolKit.Data.NHibernate;
 
 namespace SuggestionBox.Data.Repositories
@@ -6,7 +7,7 @@ namespace SuggestionBox.Data.Repositories
     /// <summary>
     /// Implementation of the Comment Repository
     /// </summary>
-    public class CommentRepository : NHibernateRepositoryBase<Comment, int>
+    public class CommentRepository : Repository<Comment, int>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="CommentRepository"/> class.

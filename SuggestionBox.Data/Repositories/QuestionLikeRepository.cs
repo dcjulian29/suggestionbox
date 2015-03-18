@@ -1,4 +1,5 @@
 ﻿using SuggestionBox.Data.Entities;
+using ToolKit.Data;
 using ToolKit.Data.NHibernate;
 
 namespace SuggestionBox.Data.Repositories
@@ -6,7 +7,7 @@ namespace SuggestionBox.Data.Repositories
     /// <summary>
     /// Question Like Repository
     /// </summary>
-    public class QuestionLikeRepository : NHibernateRepositoryBase<QuestionLike, int>
+    public class QuestionLikeRepository : Repository<QuestionLike, int>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="QuestionLikeRepository"/> class.
