@@ -102,7 +102,7 @@ Task CopySQLiteInterop -depends Init, PackageRestore {
     Copy-Item "$library_directory\x86\*" "$release_directory\x86\"
 }
 
-Task Compile -depends Version {
+Task Compile -depends Version, PackageRestore {
     exec { 
         msbuild /m /p:BuildInParralel=true /p:Platform="Any CPU" `
             /p:Configuration="$build_configuration" `
