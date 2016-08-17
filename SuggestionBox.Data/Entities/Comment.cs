@@ -17,49 +17,39 @@ namespace SuggestionBox.Data.Entities
             Justification = "Entities Always Have Virtual Members")]
         public Comment()
         {
-            this.Blocked = false;
-            this.Liked = 0;
-            this.WhenPosted = DateTime.Now;
+            Blocked = false;
+            Liked = 0;
+            WhenPosted = DateTime.Now;
         }
 
         /// <summary>
         /// Gets or sets a value indicating whether this <see cref="Comment"/> is blocked.
         /// </summary>
-        /// <value>
-        ///   <c>true</c> if blocked; otherwise, <c>false</c>.
-        /// </value>
+        /// <value><c>true</c> if blocked; otherwise, <c>false</c>.</value>
         public virtual bool Blocked { get; set; }
 
         /// <summary>
         /// Gets or sets the number of people who like this comment.
         /// </summary>
-        /// <value>
-        /// The liked.
-        /// </value>
+        /// <value>The liked.</value>
         public virtual int Liked { get; set; }
 
         /// <summary>
         /// Gets or sets the parent question of this comment
         /// </summary>
-        /// <value>
-        /// The parent question of this comment
-        /// </value>
+        /// <value>The parent question of this comment</value>
         public virtual Question ParentQuestion { get; set; }
 
         /// <summary>
         /// Gets or sets the text of the comment.
         /// </summary>
-        /// <value>
-        /// The text of the comment.
-        /// </value>
+        /// <value>The text of the comment.</value>
         public virtual string Text { get; set; }
 
         /// <summary>
         /// Gets or sets when this comment was posted.
         /// </summary>
-        /// <value>
-        /// The date and time when this comment was posted.
-        /// </value>
+        /// <value>The date and time when this comment was posted.</value>
         public virtual DateTime WhenPosted { get; set; }
     }
 }
