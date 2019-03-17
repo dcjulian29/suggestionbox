@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
@@ -32,18 +32,16 @@ namespace SuggestionBox.Data.Entities
         /// <summary>
         /// Gets or sets a value indicating whether this <see cref="Question"/> is active.
         /// </summary>
-        /// <value><c>true</c> if active; otherwise, <c>false</c>.</value>
         [DisplayName("Is this Question Active?")]
-        public virtual bool Active { get; set; }
+        public virtual Boolean Active { get; set; }
 
         /// <summary>
         /// Gets or sets the body of this question.
         /// </summary>
-        /// <value>The body of this question.</value>
         [Required]
         [DisplayName("Question Body")]
         [DataType(DataType.MultilineText)]
-        public virtual string Body { get; set; }
+        public virtual String Body { get; set; }
 
         /// <summary>
         /// Gets or sets the comments associated with this question
@@ -53,23 +51,20 @@ namespace SuggestionBox.Data.Entities
         /// <summary>
         /// Gets or sets the number of people who like this question.
         /// </summary>
-        /// <value>The liked.</value>
-        public virtual int Liked { get; set; }
+        public virtual Int32 Liked { get; set; }
 
         /// <summary>
         /// Gets or sets the subject of this question.
         /// </summary>
-        /// <value>The subject of this question.</value>
         [Required]
         [DisplayName("Question Subject")]
         [StringLength(100, ErrorMessage = "Maximum Length is 100 characters.")]
         [DataType(DataType.Text)]
-        public virtual string Subject { get; set; }
+        public virtual String Subject { get; set; }
 
         /// <summary>
         /// Gets or sets when this question was posted.
         /// </summary>
-        /// <value>The date and time this question was posted.</value>
         public virtual DateTime WhenPosted { get; set; }
 
         /// <summary>
@@ -81,7 +76,8 @@ namespace SuggestionBox.Data.Entities
             _log.DebugFormat("Adding comment to Question: {0}", comment.Text);
 
             comment.ParentQuestion = this;
-            this.Comments.Add(comment);
+
+            Comments.Add(comment);
         }
     }
 }

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using ToolKit.Data;
 
 namespace SuggestionBox.Data.Entities
@@ -11,33 +11,29 @@ namespace SuggestionBox.Data.Entities
         /// <summary>
         /// Gets or sets the hashed IP address of the visitor.
         /// </summary>
-        /// <value>The hashed IP address of the visitor.</value>
         /// <remarks>
         /// Only store the hashed IP address to prevent the ability to trace back to the original IP Address.
         /// </remarks>
-        public virtual string HashedIpAddress { get; set; }
+        public virtual String HashedIpAddress { get; set; }
 
         /// <summary>
         /// Gets or sets the last time this question was liked.
         /// </summary>
-        /// <value>The last time liked.</value>
         public virtual DateTime LastTimeLiked { get; set; }
 
         /// <summary>
         /// Gets or sets the ID of the question liked.
         /// </summary>
-        /// <value>The ID of the question.</value>
-        public virtual int QuestionId { get; set; }
+        public virtual Int32 QuestionId { get; set; }
 
         /// <summary>
-        /// Determine if we should accept the like. If the last time this visitor liked this
-        /// question was less than 10 minute (600 seconds), reject the like.
+        /// Determine if we should accept the like. If the last time this visitor liked this question
+        /// was less than 10 minute (600 seconds), reject the like.
         /// </summary>
         /// <returns><c>true</c> if the caller should accept the like; otherwise, <c>false</c>.</returns>
-        public virtual bool AcceptLike()
+        public virtual Boolean AcceptLike()
         {
-            var elaspsed = DateTime.UtcNow - LastTimeLiked;
-            var seconds = elaspsed.TotalSeconds;
+            var seconds = (DateTime.UtcNow - LastTimeLiked).TotalSeconds;
 
             if (seconds < 600)
             {
@@ -45,6 +41,7 @@ namespace SuggestionBox.Data.Entities
             }
 
             LastTimeLiked = DateTime.UtcNow;
+
             return true;
         }
     }

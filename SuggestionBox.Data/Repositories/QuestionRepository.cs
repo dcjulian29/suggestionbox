@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+using System;
+using System.Collections.Generic;
 using System.Linq;
 using SuggestionBox.Data.Entities;
 using ToolKit.Data;
@@ -9,7 +10,7 @@ namespace SuggestionBox.Data.Repositories
     /// <summary>
     /// Implementation of the Question Repository
     /// </summary>
-    public class QuestionRepository : Repository<Question, int>
+    public class QuestionRepository : Repository<Question, Int32>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="QuestionRepository"/> class.
@@ -27,23 +28,13 @@ namespace SuggestionBox.Data.Repositories
         /// <summary>
         /// Gets the active questions.
         /// </summary>
-        /// <returns>
-        /// The active questions.
-        /// </returns>
-        public List<Question> GetActiveQuestions()
-        {
-            return Context.Get<Question>().Where(q => q.Active).ToList();
-        }
+        /// <returns>The active questions.</returns>
+        public List<Question> GetActiveQuestions() => Context.Get<Question>().Where(q => q.Active).ToList();
 
         /// <summary>
         /// Gets all questions.
         /// </summary>
-        /// <returns>
-        /// All questions.
-        /// </returns>
-        public List<Question> GetAllQuestions()
-        {
-            return FindAll().ToList();
-        }
+        /// <returns>All questions.</returns>
+        public List<Question> GetAllQuestions() => FindAll().ToList();
     }
 }

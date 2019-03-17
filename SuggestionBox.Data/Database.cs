@@ -1,4 +1,4 @@
-﻿using ToolKit.Data.NHibernate;
+using ToolKit.Data.NHibernate;
 using ToolKit.Data.NHibernate.SessionFactories;
 
 namespace SuggestionBox.Data
@@ -11,12 +11,7 @@ namespace SuggestionBox.Data
         /// <summary>
         /// Gets the session manager for the Feedback database.
         /// </summary>
-        public static SessionManager Feedback
-        {
-            get
-            {
-                return new SessionManager(new SqLiteSessionFactory("db_FEEDBACK"));
-            }
-        }
+        public static SessionManager Feedback =>
+            new SessionManager(new SqLiteSessionFactory("db_FEEDBACK"));
     }
 }

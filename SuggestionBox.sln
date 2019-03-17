@@ -1,15 +1,22 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.31101.0
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.271
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SuggestionBox", "SuggestionBox\SuggestionBox.csproj", "{210C2D7B-96E3-4F68-B17E-F752E7B02ACA}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SuggestionBox.Data", "SuggestionBox.Data\SuggestionBox.Data.csproj", "{8D9EFC2E-4430-4E9E-A272-C0B72CD14297}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{7CB68F33-7610-4622-BE69-28F8C107C2AC}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTests", "UnitTests\UnitTests.csproj", "{F2E0F613-7BEB-47CC-955B-9F1EA1B6F29B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SuggestionBox.Data", "SuggestionBox.Data\SuggestionBox.Data.csproj", "{C49D1CC9-7D4D-44BD-9C71-0FD7A516C614}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{CF3814CB-4278-44A6-B9A1-2185C5B4F961}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+		build.cake = build.cake
+		README.md = README.md
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SuggestionBox", "SuggestionBox\SuggestionBox.csproj", "{04EB2EE9-02AE-4290-B424-7B7C1E44FAD6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,23 +24,26 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{210C2D7B-96E3-4F68-B17E-F752E7B02ACA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{210C2D7B-96E3-4F68-B17E-F752E7B02ACA}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{210C2D7B-96E3-4F68-B17E-F752E7B02ACA}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{210C2D7B-96E3-4F68-B17E-F752E7B02ACA}.Release|Any CPU.Build.0 = Release|Any CPU
-		{8D9EFC2E-4430-4E9E-A272-C0B72CD14297}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{8D9EFC2E-4430-4E9E-A272-C0B72CD14297}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{8D9EFC2E-4430-4E9E-A272-C0B72CD14297}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{8D9EFC2E-4430-4E9E-A272-C0B72CD14297}.Release|Any CPU.Build.0 = Release|Any CPU
 		{F2E0F613-7BEB-47CC-955B-9F1EA1B6F29B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{F2E0F613-7BEB-47CC-955B-9F1EA1B6F29B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F2E0F613-7BEB-47CC-955B-9F1EA1B6F29B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F2E0F613-7BEB-47CC-955B-9F1EA1B6F29B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C49D1CC9-7D4D-44BD-9C71-0FD7A516C614}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C49D1CC9-7D4D-44BD-9C71-0FD7A516C614}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C49D1CC9-7D4D-44BD-9C71-0FD7A516C614}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C49D1CC9-7D4D-44BD-9C71-0FD7A516C614}.Release|Any CPU.Build.0 = Release|Any CPU
+		{04EB2EE9-02AE-4290-B424-7B7C1E44FAD6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{04EB2EE9-02AE-4290-B424-7B7C1E44FAD6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{04EB2EE9-02AE-4290-B424-7B7C1E44FAD6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{04EB2EE9-02AE-4290-B424-7B7C1E44FAD6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{F2E0F613-7BEB-47CC-955B-9F1EA1B6F29B} = {7CB68F33-7610-4622-BE69-28F8C107C2AC}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {2248A7C9-6D51-48F0-8D23-274AF84DAB90}
 	EndGlobalSection
 EndGlobal

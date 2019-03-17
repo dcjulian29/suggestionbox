@@ -1,4 +1,5 @@
-﻿using System.Linq;
+using System;
+using System.Linq;
 using SuggestionBox.Data.Entities;
 using ToolKit.Data;
 using ToolKit.Data.NHibernate;
@@ -8,7 +9,7 @@ namespace SuggestionBox.Data.Repositories
     /// <summary>
     /// Implementation of the Home Page Visits Repository
     /// </summary>
-    public class HomePageVisitRepository : Repository<HomePageVisit, int>
+    public class HomePageVisitRepository : Repository<HomePageVisit, Int32>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="HomePageVisitRepository"/> class.
