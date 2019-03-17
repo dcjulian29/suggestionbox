@@ -8,7 +8,7 @@ if (TeamCity.IsRunningOnTeamCity) {
     target = "teamcity";
 }
 
-var configuration = Argument("configuration", "Release");
+var configuration = Argument("configuration", "Debug");
 
 var projectName = "SuggestionBox";
 
@@ -38,6 +38,33 @@ StartProcess ("git", new ProcessSettings {
 result = new List<string>(stdout);
 var branch = result.Count == 0 ? "undetermined" : result[0];
 
+Setup(setupContext =>
+{
+    if (setupContext.TargetTask.Name == "Package")
+    {
+        Information("Switching to Release Configuration for packaging...");
+        configuration = "Release";
+    }
+});
+
+TaskSetup(setupContext =>
+{
+    if (TeamCity.IsRunningOnTeamCity)
+    {
+        TeamCity.WriteStartBuildBlock(setupContext.Task.Description ?? setupContext.Task.Name);
+        TeamCity.WriteStartProgress(setupContext.Task.Description ?? setupContext.Task.Name);
+    }
+});
+
+TaskTeardown(teardownContext =>
+{
+    if (TeamCity.IsRunningOnTeamCity)
+    {
+        TeamCity.WriteEndBuildBlock(teardownContext.Task.Description ?? teardownContext.Task.Name);
+        TeamCity.WriteEndProgress(teardownContext.Task.Description ?? teardownContext.Task.Name);
+    }
+});
+
 Task("Default")
     .IsDependentOn("Compile");
 
@@ -62,16 +89,23 @@ Task("Version")
     .IsDependentOn("Init")
     .Does(() =>
     {
-        Information("MARKING THIS BUILD AS VERSION " + version);
+        if (configuration == "Release")
+        {
+            Information("This is a 'Release' build, marking this build as version: " + version);
 
-        CreateAssemblyInfo(buildDirectory + @"\CommonAssemblyInfo.cs", new AssemblyInfoSettings {
-            Version = version,
-            FileVersion = version,
-            InformationalVersion = version,
-            Copyright = String.Format("(c) Julian Easterling {0}", DateTime.Now.Year),
-            Company = String.Empty,
-            Configuration = configuration
-        });
+            CreateAssemblyInfo(buildDirectory + @"\CommonAssemblyInfo.cs", new AssemblyInfoSettings {
+                Version = version,
+                FileVersion = version,
+                InformationalVersion = version,
+                Copyright = String.Format("(c) Julian Easterling {0}", DateTime.Now.Year),
+                Company = String.Empty,
+                Configuration = configuration
+            });
+        }
+        else
+        {
+            Information("This is not a 'Release' build, skipping creating common version file...");
+        }
     });
 
 Task("PackageClean")
@@ -96,12 +130,15 @@ Task("Compile")
     .IsDependentOn("Version")
     .Does(() =>
     {
-        MSBuild(solutionFile, new MSBuildSettings()
-            .SetConfiguration(configuration)
-            .WithProperty("OutDir", outputDirectory)
-            .WithProperty("TreatWarningsAsErrors", "True")
-            .UseToolVersion(MSBuildToolVersion.VS2015)
-            .SetNodeReuse(false));
+        var settings = new MSBuildSettings {
+            Configuration = configuration,
+            ToolVersion = MSBuildToolVersion.VS2017,
+            NodeReuse = false,
+            WarningsAsError = true
+        }
+        .WithProperty("OutDir", outputDirectory);
+
+        MSBuild(solutionFile, settings);
     });
 
 Task("Test")
@@ -204,9 +241,11 @@ Task("Package")
     .IsDependentOn("Test")
     .Does(() =>
     {
+        CreateDirectory(buildDirectory + "\\packages");
+
         var nuGetPackSettings = new NuGetPackSettings {
             Version = version,
-            OutputDirectory = buildDirectory
+            OutputDirectory = buildDirectory + "\\packages"
         };
 
         var nuspecFiles = GetFiles(baseDirectory + "\\*.nuspec");
