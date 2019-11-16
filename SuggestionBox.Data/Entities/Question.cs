@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using Common.Logging;
 using ToolKit.Data;
 
 namespace SuggestionBox.Data.Entities
@@ -11,7 +12,7 @@ namespace SuggestionBox.Data.Entities
     /// </summary>
     public class Question : Entity
     {
-        private static Common.Logging.ILog _log = Common.Logging.LogManager.GetLogger<Question>();
+        private static readonly ILog _log = LogManager.GetLogger<Question>();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Question"/> class
