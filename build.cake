@@ -14,7 +14,7 @@ var projectName = "SuggestionBox";
 
 var baseDirectory = MakeAbsolute(Directory("."));
 
-var buildDirectory = baseDirectory + "\\build";
+var buildDirectory = baseDirectory + "\\.build";
 var outputDirectory = buildDirectory + "\\output";
 var packageDirectory = baseDirectory + "\\packages";
 
@@ -26,17 +26,14 @@ StartProcess ("git", new ProcessSettings {
     RedirectStandardOutput = true,
 }, out stdout);
 List<String> result = new List<string>(stdout);
-var version = result.Count == 0 ? "0.0.0" : result[0];
+var version = String.IsNullOrEmpty(result[0]) ? "0.0.0" : result[0];
 
-stdout = Enumerable.Empty<string>();
-result.Clear();
-
-StartProcess ("git", new ProcessSettings {
-    Arguments = "rev-parse --abbrev-ref HEAD",
-    RedirectStandardOutput = true,
-}, out stdout);
-result = new List<string>(stdout);
-var branch = result.Count == 0 ? "undetermined" : result[0];
+var msbuildSettings = new MSBuildSettings {
+    Configuration = configuration,
+    ToolVersion = MSBuildToolVersion.VS2019,
+    NodeReuse = false,
+    WarningsAsError = false
+}.WithProperty("OutDir", outputDirectory);
 
 Setup(setupContext =>
 {
@@ -44,6 +41,8 @@ Setup(setupContext =>
     {
         Information("Switching to Release Configuration for packaging...");
         configuration = "Release";
+
+        msbuildSettings.Configuration = "Release";
     }
 });
 
@@ -72,9 +71,7 @@ Task("Clean")
     .Does(() =>
     {
         CleanDirectories(buildDirectory);
-        MSBuild(solutionFile, new MSBuildSettings {
-            Configuration = configuration,
-            }.WithTarget("Clean"));
+        MSBuild(solutionFile, msbuildSettings.WithTarget("Clean"));
     });
 
 Task("Init")
@@ -130,15 +127,7 @@ Task("Compile")
     .IsDependentOn("Version")
     .Does(() =>
     {
-        var settings = new MSBuildSettings {
-            Configuration = configuration,
-            ToolVersion = MSBuildToolVersion.VS2017,
-            NodeReuse = false,
-            WarningsAsError = true
-        }
-        .WithProperty("OutDir", outputDirectory);
-
-        MSBuild(solutionFile, settings);
+        MSBuild(solutionFile, msbuildSettings.WithTarget("ReBuild"));
     });
 
 Task("Test")
@@ -171,6 +160,7 @@ Task("Coverage")
             new OpenCoverSettings() { Register = "user" }
                 .WithFilter(@"+[*]*")
                 .WithFilter(@"-[UnitTests]*")
+                .WithFilter(@"-[xunit.*]*")
                 .ExcludeByAttribute("System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute")
                 .ExcludeByFile(@"*\\*Designer.cs;*\\*.g.cs;*.*.g.i.cs"));
 
