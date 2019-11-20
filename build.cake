@@ -1,6 +1,7 @@
 #tool "nuget:?package=xunit.runner.console"
 #tool "nuget:?package=OpenCover"
 #tool "nuget:?package=ReportGenerator"
+#tool "nuget:?package=AliaSQL"
 
 var target = Argument("target", "Default");
 
@@ -19,6 +20,14 @@ var outputDirectory = buildDirectory + "\\output";
 var packageDirectory = baseDirectory + "\\packages";
 
 var solutionFile = String.Format("{0}\\{1}.sln", baseDirectory, projectName);
+
+var databaseServer = ".\\";
+var databaseName = "SUGGESTIONBOX";
+var dataDirectory = baseDirectory + "\\data";
+
+
+var aliaSql = System.IO.Directory.GetDirectories(@".\tools", "AliaSQL*", SearchOption.AllDirectories);
+var aliaSqlExe = aliaSql[0] + "\\tools\\AliaSQL.exe";
 
 IEnumerable<string> stdout;
 StartProcess ("git", new ProcessSettings {
@@ -241,6 +250,30 @@ Task("Package")
         var nuspecFiles = GetFiles(baseDirectory + "\\*.nuspec");
 
         NuGetPack(nuspecFiles, nuGetPackSettings);
+    });
+
+Task("RebuildDatabase")
+    .Does(() =>
+    {
+        StartProcess (aliaSqlExe, new ProcessSettings {
+            Arguments = "Rebuild " + databaseServer + " " + databaseName + " " + dataDirectory
+        });
+    });
+
+Task("UpdateDatabase")
+    .Does(() =>
+    {
+        StartProcess (aliaSqlExe, new ProcessSettings {
+            Arguments = "Update " + databaseServer + " " + databaseName + " " + dataDirectory
+        });
+    });
+
+Task("TestDataDatabase")
+    .Does(() =>
+    {
+        StartProcess (aliaSqlExe, new ProcessSettings {
+            Arguments = "TestData " + databaseServer + " " + databaseName + " " + dataDirectory
+        });
     });
 
 RunTarget(target);
