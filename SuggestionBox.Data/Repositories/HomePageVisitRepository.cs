@@ -14,15 +14,8 @@ namespace SuggestionBox.Data.Repositories
         /// <summary>
         /// Initializes a new instance of the <see cref="HomePageVisitRepository"/> class.
         /// </summary>
-        public HomePageVisitRepository()
-        {
-            if (!SessionPool.Contains("feedback"))
-            {
-                SessionPool.Add("feedback", Database.Feedback);
-            }
-
-            Context = new NHibernateUnitOfWork(SessionPool.Session("feedback"));
-        }
+        public HomePageVisitRepository() =>
+            Context = new NHibernateUnitOfWork(Database.SessionFactory.OpenSession());
 
         /// <summary>
         /// Gets a entity identified by the hashed IP address.

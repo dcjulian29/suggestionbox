@@ -13,14 +13,7 @@ namespace SuggestionBox.Data.Repositories
         /// <summary>
         /// Initializes a new instance of the <see cref="QuestionLikeRepository"/> class.
         /// </summary>
-        public QuestionLikeRepository()
-        {
-            if (!SessionPool.Contains("feedback"))
-            {
-                SessionPool.Add("feedback", Database.Feedback);
-            }
-
-            Context = new NHibernateUnitOfWork(SessionPool.Session("feedback"));
-        }
+        public QuestionLikeRepository() =>
+            Context = new NHibernateUnitOfWork(Database.SessionFactory.OpenSession());
     }
 }

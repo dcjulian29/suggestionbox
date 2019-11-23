@@ -15,15 +15,8 @@ namespace SuggestionBox.Data.Repositories
         /// <summary>
         /// Initializes a new instance of the <see cref="QuestionRepository"/> class.
         /// </summary>
-        public QuestionRepository()
-        {
-            if (!SessionPool.Contains("feedback"))
-            {
-                SessionPool.Add("feedback", Database.Feedback);
-            }
-
-            Context = new NHibernateUnitOfWork(SessionPool.Session("feedback"));
-        }
+        public QuestionRepository() =>
+            Context = new NHibernateUnitOfWork(Database.SessionFactory.OpenSession());
 
         /// <summary>
         /// Gets the active questions.

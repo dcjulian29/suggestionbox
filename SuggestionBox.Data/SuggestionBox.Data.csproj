@@ -8,7 +8,9 @@
     <Compile Include="../build/commonassemblyinfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="System.ComponentModel.Annotations" Version="4.3.0" />
-    <PackageReference Include="ToolKit.Data.NHibernate" Version="2019.1.15.1" />
+    <PackageReference Include="Microsoft.SqlServer.Compact" Version="4.0.8876.1" />
+    <PackageReference Include="System.ComponentModel.Annotations" Version="4.6.0" />
+    <PackageReference Include="System.Runtime.Caching" Version="4.6.0" />
+    <PackageReference Include="ToolKit.Data.NHibernate" Version="2019.11.16.2" />
   </ItemGroup>
 </Project>
