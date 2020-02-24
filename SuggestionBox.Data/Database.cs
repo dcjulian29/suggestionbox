@@ -11,7 +11,7 @@ using Configuration = NHibernate.Cfg.Configuration;
 namespace SuggestionBox.Data
 {
     /// <summary>
-    /// Provides Session Managers for the various databases that this applications uses.
+    ///     Provides Session Managers for the various databases that this applications uses.
     /// </summary>
     public class Database
     {
@@ -29,7 +29,7 @@ namespace SuggestionBox.Data
         static Database() => UnitTests = false;
 
         /// <summary>
-        /// Gets the session manager for the SuggestionBox database.
+        ///     Gets the session manager for the SuggestionBox database.
         /// </summary>
         public static ISessionFactory SessionFactory
         {
@@ -67,7 +67,7 @@ namespace SuggestionBox.Data
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether Unit Test are being run.
+        ///     Gets or sets a value indicating whether Unit Test are being run.
         /// </summary>
         public static bool UnitTests { get; set; }
 
@@ -82,9 +82,7 @@ namespace SuggestionBox.Data
             {
                 _log.Debug(m => m("Creating a Unit Test DB configuration..."));
                 configurer = MsSqlCeConfiguration
-                    .MsSqlCe40.ConnectionString("Data Source=test.sdf")
-                    .Dialect<UnitTestSqlCeDialect>()
-                    .Driver<UnitTestSqlCeDriver>();
+                    .MsSqlCe40.ConnectionString("Data Source=test.sdf");
             }
             else
             {
