@@ -5,11 +5,17 @@
 
 var target = Argument("target", "Default");
 
+var configuration = Argument("configuration", "Debug");
+
 if ((target == "Default") && (TeamCity.IsRunningOnTeamCity)) {
     target = "TeamCity";
+    configuration = "Release";
 }
 
-var configuration = Argument("configuration", "Debug");
+if ((target == "Default") && (AppVeyor.IsRunningOnAppVeyor)) {
+    target = "AppVeyor";
+    configuration = "Release";
+}
 
 var projectName = "SuggestionBox";
 
@@ -36,6 +42,35 @@ StartProcess ("git", new ProcessSettings {
 }, out stdout);
 List<String> result = new List<string>(stdout);
 var version = String.IsNullOrEmpty(result[0]) ? "0.0.0" : result[0];
+
+StartProcess ("git", new ProcessSettings {
+    Arguments = "rev-parse --short=8 HEAD",
+    RedirectStandardOutput = true,
+}, out stdout);
+result = new List<string>(stdout);
+var packageId = String.IsNullOrEmpty(result[0]) ? "unknown" : result[0];
+
+var branch = "unknown";
+if (AppVeyor.IsRunningOnAppVeyor) {
+    branch = EnvironmentVariable("APPVEYOR_REPO_BRANCH");
+
+    if (branch != "master") {
+        AppVeyor.UpdateBuildVersion($"{version}-{branch}.{packageId}");
+    } else {
+        AppVeyor.UpdateBuildVersion(version);
+    }
+} else {
+    StartProcess ("git", new ProcessSettings {
+        Arguments = "symbolic-ref --short HEAD",
+        RedirectStandardOutput = true,
+    }, out stdout);
+    result = new List<string>(stdout);
+    branch = String.IsNullOrEmpty(result[0]) ? "unknown" : result[0];
+}
+
+if (branch != "master") {
+    version = $"{version}-{branch}.{packageId}";
+}
 
 var msbuildSettings = new MSBuildSettings {
     Configuration = configuration,
@@ -95,23 +130,22 @@ Task("Version")
     .IsDependentOn("Init")
     .Does(() =>
     {
-        if (configuration == "Release")
-        {
-            Information("This is a 'Release' build, marking this build as version: " + version);
+        Information("Marking this build as version: " + version);
 
-            CreateAssemblyInfo(buildDirectory + @"\CommonAssemblyInfo.cs", new AssemblyInfoSettings {
-                Version = version,
-                FileVersion = version,
-                InformationalVersion = version,
-                Copyright = String.Format("(c) Julian Easterling {0}", DateTime.Now.Year),
-                Company = String.Empty,
-                Configuration = configuration
-            });
+        var assemblyVersion = "0.0.0";;
+
+        if (branch == "master") {
+            assemblyVersion = version;
         }
-        else
-        {
-            Information("This is not a 'Release' build, skipping creating common version file...");
-        }
+
+        CreateAssemblyInfo(buildDirectory + @"\CommonAssemblyInfo.cs", new AssemblyInfoSettings {
+            Version = assemblyVersion,
+            FileVersion = assemblyVersion,
+            InformationalVersion = version,
+            Copyright = String.Format("(c) Julian Easterling {0}", DateTime.Now.Year),
+            Company = String.Empty,
+            Configuration = configuration
+        });
     });
 
 Task("PackageClean")
@@ -250,6 +284,18 @@ Task("Package")
         var nuspecFiles = GetFiles(baseDirectory + "\\*.nuspec");
 
         NuGetPack(nuspecFiles, nuGetPackSettings);
+    });
+
+Task("AppVeyor")
+    .IsDependentOn("Package")
+    .WithCriteria(() => AppVeyor.IsRunningOnAppVeyor)
+    .Does(() =>
+    {
+        CopyFiles(buildDirectory + "\\packages\\*.nupkg", MakeAbsolute(Directory("./")), false);
+
+        GetFiles(baseDirectory + "\\*.nupkg")
+            .ToList()
+            .ForEach(f => AppVeyor.UploadArtifact(f, new AppVeyorUploadArtifactsSettings { DeploymentName = "packages" }));
     });
 
 Task("RebuildDatabase")
