@@ -1,11 +1,10 @@
-using Common.Logging;
-using FluentNHibernate.Cfg;
-using FluentNHibernate.Cfg.Db;
-using NHibernate;
-using NHibernate.Tool.hbm2ddl;
 using System;
 using System.Configuration;
-using System.Runtime.Caching;
+using System.Reflection;
+using Common.Logging;
+using FluentNHibernate.Cfg.Db;
+using NHibernate;
+using ToolKit.Data.NHibernate;
 using Configuration = NHibernate.Cfg.Configuration;
 
 namespace SuggestionBox.Data
@@ -13,87 +12,40 @@ namespace SuggestionBox.Data
     /// <summary>
     ///     Provides Session Managers for the various databases that this applications uses.
     /// </summary>
-    public class Database
+    public class Database : NHibernateDatabaseBase
     {
-        private static readonly string _cacheKey = "Database-SuggestionBox";
-        private static readonly object _cacheLock = new object();
-
-        private static readonly CacheItemPolicy _cachePolicy = new CacheItemPolicy()
-        {
-            AbsoluteExpiration = new DateTimeOffset(DateTime.Now.AddDays(1))
-        };
-
         private static readonly ILog _log = LogManager.GetLogger<Database>();
-        private static readonly ObjectCache _sessionFactories = MemoryCache.Default;
+        private static readonly string _sessionName = "Database-SuggestionBox";
 
-        static Database() => UnitTests = false;
+        static Database() => new Database();
 
         /// <summary>
-        ///     Gets the session manager for the SuggestionBox database.
+        ///     Initializes a new instance of the <see cref="Database" /> class.
         /// </summary>
-        public static ISessionFactory SessionFactory
+        public Database() : base(Assembly.GetAssembly(typeof(Database)))
+        {
+        }
+
+        public new static ISessionFactory SessionFactory
         {
             get
             {
-                if (_sessionFactories.Contains(_cacheKey))
-                {
-                    _log.Debug(m => m("Returning existing database session"));
-
-                    return _sessionFactories[_cacheKey] as ISessionFactory;
-                }
-
-                lock (_cacheLock)
-                {
-                    if (_sessionFactories.Contains(_cacheKey))
-                    {
-                        _log.Debug(m => m("Returning existing database session."));
-
-                        return _sessionFactories[_cacheKey] as ISessionFactory;
-                    }
-
-                    _log.Debug(m => m("Creating a new database session."));
-
-                    var sessionFactory = Fluently.Configure()
-                        .Database(DatabaseConfigurer)
-                        .Mappings(m => m.FluentMappings.AddFromAssemblyOf<Database>())
-                        .ExposeConfiguration(BuildSchema)
-                        .BuildSessionFactory();
-
-                    _sessionFactories.Set(_cacheKey, sessionFactory, _cachePolicy);
-
-                    return sessionFactory;
-                }
+                return Instance.SessionFactory(_sessionName);
             }
         }
 
-        /// <summary>
-        ///     Gets or sets a value indicating whether Unit Test are being run.
-        /// </summary>
-        public static bool UnitTests { get; set; }
-
-        private static void BuildSchema(Configuration config) =>
-                    new SchemaExport(config).Create(false, UnitTests);
-
-        private static IPersistenceConfigurer DatabaseConfigurer()
+        public override void InitializeDatabase(Action initialization)
         {
-            IPersistenceConfigurer configurer;
+            throw new NotImplementedException();
+        }
 
-            if (UnitTests)
-            {
-                _log.Debug(m => m("Creating a Unit Test DB configuration..."));
-                configurer = MsSqlCeConfiguration
-                    .MsSqlCe40.ConnectionString("Data Source=test.sdf");
-            }
-            else
-            {
-                var c = ConfigurationManager.ConnectionStrings["db_SUGGESTIONBOX"].ConnectionString;
+        protected override IPersistenceConfigurer DatabaseConfigurer()
+        {
+            var c = ConfigurationManager.ConnectionStrings["db_SUGGESTIONBOX"].ConnectionString;
 
-                _log.Debug(m => m("Database: {0}", c));
+            _log.Debug(m => m("Database: {0}", c));
 
-                configurer = MsSqlConfiguration.MsSql2012.ConnectionString(c);
-            }
-
-            return configurer;
+            return MsSqlConfiguration.MsSql2012.ConnectionString(c);
         }
     }
 }

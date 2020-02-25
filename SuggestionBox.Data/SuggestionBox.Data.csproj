@@ -10,6 +10,7 @@
   <ItemGroup>
     <PackageReference Include="System.ComponentModel.Annotations" Version="4.6.0" />
     <PackageReference Include="System.Runtime.Caching" Version="4.6.0" />
-    <PackageReference Include="ToolKit.Data.NHibernate" Version="2019.11.16.2" />
+    <PackageReference Include="ToolKit" Version="2020.2.23.1" />
+    <PackageReference Include="ToolKit.Data.NHibernate" Version="2020.2.23.1" />
   </ItemGroup>
 </Project>
