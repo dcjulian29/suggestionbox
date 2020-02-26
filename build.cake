@@ -1,4 +1,3 @@
-#tool "nuget:?package=xunit.runner.console"
 #tool "nuget:?package=OpenCover"
 #tool "nuget:?package=ReportGenerator"
 #tool "nuget:?package=AliaSQL"
@@ -180,11 +179,7 @@ Task("UnitTest")
     .IsDependentOn("Compile")
     .Does(() =>
     {
-        XUnit2(outputDirectory + "\\UnitTests.dll",
-            new XUnit2Settings {
-                Parallelism = ParallelismOption.All,
-                ShadowCopy = false
-            });
+        DotNetCoreTest(outputDirectory + "\\UnitTests.dll");
     });
 
 Task("Coverage")
@@ -193,19 +188,21 @@ Task("Coverage")
     {
         CreateDirectory(buildDirectory + "\\coverage");
 
-        OpenCover(tool => {
-            tool.XUnit2(outputDirectory + "\\UnitTests.dll",
-                new XUnit2Settings {
-                    Parallelism = ParallelismOption.All,
-                    ShadowCopy = false });
-            },
-            new FilePath(buildDirectory + "\\coverage\\coverage.xml"),
-            new OpenCoverSettings() { Register = "user" }
+        var dotNetTestSettings = new DotNetCoreTestSettings
+        {
+            Configuration = configuration,
+            NoBuild = true
+        };
+
+        var openCoverSettings = new OpenCoverSettings() { Register = "user" }
                 .WithFilter(@"+[*]*")
                 .WithFilter(@"-[UnitTests]*")
                 .WithFilter(@"-[xunit.*]*")
                 .ExcludeByAttribute("System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute")
-                .ExcludeByFile(@"*\\*Designer.cs;*\\*.g.cs;*.*.g.i.cs"));
+                .ExcludeByFile(@"*\\*Designer.cs;*\\*.g.cs;*.*.g.i.cs");
+
+        OpenCover(context => context.DotNetCoreTest(outputDirectory + "\\UnitTests.dll", dotNetTestSettings),
+            buildDirectory + "\\coverage\\coverage.xml", openCoverSettings);
 
         ReportGenerator(buildDirectory + "\\coverage\\coverage.xml", buildDirectory + "\\coverage");
     });
