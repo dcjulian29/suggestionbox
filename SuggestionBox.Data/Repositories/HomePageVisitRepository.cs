@@ -7,18 +7,18 @@ using ToolKit.Data.NHibernate;
 namespace SuggestionBox.Data.Repositories
 {
     /// <summary>
-    /// Implementation of the Home Page Visits Repository
+    ///     Implementation of the Home Page Visits Repository
     /// </summary>
     public class HomePageVisitRepository : Repository<HomePageVisit, Int32>
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="HomePageVisitRepository"/> class.
+        ///     Initializes a new instance of the <see cref="HomePageVisitRepository" /> class.
         /// </summary>
         public HomePageVisitRepository() =>
             Context = new NHibernateUnitOfWork(Database.SessionFactory.OpenSession());
 
         /// <summary>
-        /// Gets a entity identified by the hashed IP address.
+        ///     Gets a entity identified by the hashed IP address.
         /// </summary>
         /// <param name="ip">The hashed IP address.</param>
         /// <returns>A entity identified by the hashed IP address.</returns>
@@ -28,9 +28,7 @@ namespace SuggestionBox.Data.Repositories
                            where v.HashedIpAddress == ip
                            select v;
 
-            var visitor = visitors.FirstOrDefault();
-
-            return visitor;
+            return visitors.FirstOrDefault();
         }
     }
 }
