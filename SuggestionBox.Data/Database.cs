@@ -26,6 +26,10 @@ namespace SuggestionBox.Data
         {
         }
 
+        /// <summary>
+        ///     Return the Session Factory for this application.
+        /// </summary>
+        /// <returns>the Session Factory</returns>
         public new static ISessionFactory SessionFactory
         {
             get
@@ -34,9 +38,12 @@ namespace SuggestionBox.Data
             }
         }
 
+        /// <summary>
+        ///     This method will Initializes the database.
+        /// </summary>
+        /// <param name="initialization">The code to execute to Initialize Database</param>
         public override void InitializeDatabase(Action initialization)
         {
-            throw new NotImplementedException();
         }
 
         protected override IPersistenceConfigurer DatabaseConfigurer()
