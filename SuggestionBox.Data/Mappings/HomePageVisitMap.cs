@@ -1,15 +1,15 @@
-﻿using FluentNHibernate.Mapping;
+using FluentNHibernate.Mapping;
 using SuggestionBox.Data.Entities;
 
 namespace SuggestionBox.Data.Mappings
 {
     /// <summary>
-    /// HomePageVisit NHibernate Mapping
+    ///     HomePageVisit NHibernate Mapping
     /// </summary>
     public class HomePageVisitMap : ClassMap<HomePageVisit>
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="HomePageVisitMap"/> class.
+        ///     Initializes a new instance of the <see cref="HomePageVisitMap" /> class.
         /// </summary>
         public HomePageVisitMap()
         {

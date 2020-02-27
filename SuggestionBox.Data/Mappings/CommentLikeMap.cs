@@ -1,15 +1,15 @@
-﻿using FluentNHibernate.Mapping;
+using FluentNHibernate.Mapping;
 using SuggestionBox.Data.Entities;
 
 namespace SuggestionBox.Data.Mappings
 {
     /// <summary>
-    /// CommentLike NHibernate Mapping
+    ///     CommentLike NHibernate Mapping
     /// </summary>
     public class CommentLikeMap : ClassMap<CommentLike>
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="CommentLikeMap"/> class.
+        ///     Initializes a new instance of the <see cref="CommentLikeMap" /> class.
         /// </summary>
         public CommentLikeMap()
         {
