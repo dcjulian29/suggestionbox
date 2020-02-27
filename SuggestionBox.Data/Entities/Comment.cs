@@ -4,12 +4,12 @@ using ToolKit.Data;
 namespace SuggestionBox.Data.Entities
 {
     /// <summary>
-    /// Comment Entity
+    ///     Comment Entity
     /// </summary>
     public class Comment : Entity
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="Comment"/> class.
+        ///     Initializes a new instance of the <see cref="Comment" /> class.
         /// </summary>
         // ReSharper disable DoNotCallOverridableMethodsInConstructor
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage",
@@ -23,27 +23,27 @@ namespace SuggestionBox.Data.Entities
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether this <see cref="Comment"/> is blocked.
+        ///     Gets or sets a value indicating whether this <see cref="Comment" /> is blocked.
         /// </summary>
-        public virtual Boolean Blocked { get; set; }
+        public virtual bool Blocked { get; set; }
 
         /// <summary>
-        /// Gets or sets the number of people who like this comment.
+        ///     Gets or sets the number of people who like this comment.
         /// </summary>
-        public virtual Int32 Liked { get; set; }
+        public virtual int Liked { get; set; }
 
         /// <summary>
-        /// Gets or sets the parent question of this comment
+        ///     Gets or sets the parent question of this comment
         /// </summary>
         public virtual Question ParentQuestion { get; set; }
 
         /// <summary>
-        /// Gets or sets the text of the comment.
+        ///     Gets or sets the text of the comment.
         /// </summary>
-        public virtual String Text { get; set; }
+        public virtual string Text { get; set; }
 
         /// <summary>
-        /// Gets or sets when this comment was posted.
+        ///     Gets or sets when this comment was posted.
         /// </summary>
         public virtual DateTime WhenPosted { get; set; }
     }

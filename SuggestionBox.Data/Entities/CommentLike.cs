@@ -4,34 +4,35 @@ using ToolKit.Data;
 namespace SuggestionBox.Data.Entities
 {
     /// <summary>
-    /// Comment Like Data Model
+    ///     Comment Like Data Model
     /// </summary>
     public class CommentLike : Entity
     {
         /// <summary>
-        /// Gets or sets the ID of the comment liked.
+        ///     Gets or sets the ID of the comment liked.
         /// </summary>
-        public virtual Int32 CommentId { get; set; }
+        public virtual int CommentId { get; set; }
 
         /// <summary>
-        /// Gets or sets the hashed IP address of the visitor.
+        ///     Gets or sets the hashed IP address of the visitor.
         /// </summary>
         /// <remarks>
-        /// Only store the hashed IP address to prevent the ability to trace back to the original IP Address.
+        ///     Only store the hashed IP address to prevent the ability to trace back to the
+        ///     original IP Address.
         /// </remarks>
-        public virtual String HashedIpAddress { get; set; }
+        public virtual string HashedIpAddress { get; set; }
 
         /// <summary>
-        /// Gets or sets the last time this comment was liked.
+        ///     Gets or sets the last time this comment was liked.
         /// </summary>
         public virtual DateTime LastTimeLiked { get; set; }
 
         /// <summary>
-        /// Determine if we should accept the like. If the last time this visitor liked this comment
-        /// was less than 10 minute (600 seconds), reject the like.
+        ///     Determine if we should accept the like. If the last time this visitor liked this
+        ///     comment was less than 10 minute (600 seconds), reject the like.
         /// </summary>
         /// <returns><c>true</c> if the caller should accept the like; otherwise, <c>false</c>.</returns>
-        public virtual Boolean AcceptLike()
+        public virtual bool AcceptLike()
         {
             var seconds = (DateTime.UtcNow - LastTimeLiked).TotalSeconds;
 
