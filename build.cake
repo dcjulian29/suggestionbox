@@ -1,6 +1,7 @@
-#tool "nuget:?package=OpenCover"
-#tool "nuget:?package=ReportGenerator"
-#tool "nuget:?package=AliaSQL"
+#tool "nuget:?package=OpenCover&version=4.7.922"
+#tool "nuget:?package=ReportGenerator&version=4.5.0"
+#tool "nuget:?package=AliaSQL&version=1.4.2.0317"
+#tool "nuget:?package=GitVersion.CommandLine&version=3.6.5"
 
 var target = Argument("target", "Default");
 
@@ -129,6 +130,13 @@ Task("Version")
     .IsDependentOn("Init")
     .Does(() =>
     {
+        var gitversion = GitVersion(new GitVersionSettings{
+            UpdateAssemblyInfo = false,
+            OutputType = GitVersionOutput.Json
+        });
+
+        Information($"SemVer= {gitversion.SemVer};\nAssemblySemVer = {gitversion.AssemblySemVer}");
+
         Information("Marking this build as version: " + version);
 
         var assemblyVersion = "0.0.0";;
@@ -288,9 +296,7 @@ Task("AppVeyor")
     .WithCriteria(() => AppVeyor.IsRunningOnAppVeyor)
     .Does(() =>
     {
-        CopyFiles(buildDirectory + "\\packages\\*.nupkg", MakeAbsolute(Directory("./")), false);
-
-        GetFiles(baseDirectory + "\\*.nupkg")
+        GetFiles(buildDirectory + "\\packages\\*.nupkg")
             .ToList()
             .ForEach(f => AppVeyor.UploadArtifact(f, new AppVeyorUploadArtifactsSettings { DeploymentName = "packages" }));
     });
