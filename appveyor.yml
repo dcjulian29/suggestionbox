@@ -4,7 +4,6 @@ init:
   - git config --global core.autocrlf true
 
 environment:
-  CAKE_SETTINGS_SKIPPACKAGEVERSIONCHECK: true
   DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
 
 build_script:
