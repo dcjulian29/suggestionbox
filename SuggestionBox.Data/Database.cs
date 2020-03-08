@@ -6,12 +6,14 @@ using FluentNHibernate.Cfg.Db;
 using NHibernate;
 using ToolKit.Data.NHibernate;
 using Configuration = NHibernate.Cfg.Configuration;
+using System.Diagnostics.CodeAnalysis;
 
 namespace SuggestionBox.Data
 {
     /// <summary>
-    ///     Provides Session Managers for the various databases that this applications uses.
+    ///   Provides Session Managers for the various databases that this applications uses.
     /// </summary>
+    [ExcludeFromCodeCoverage]
     public class Database : NHibernateDatabaseBase
     {
         private static readonly ILog _log = LogManager.GetLogger<Database>();
@@ -20,14 +22,14 @@ namespace SuggestionBox.Data
         static Database() => new Database();
 
         /// <summary>
-        ///     Initializes a new instance of the <see cref="Database" /> class.
+        ///   Initializes a new instance of the <see cref="Database" /> class.
         /// </summary>
         public Database() : base(Assembly.GetAssembly(typeof(Database)))
         {
         }
 
         /// <summary>
-        ///     Return the Session Factory for this application.
+        ///   Return the Session Factory for this application.
         /// </summary>
         /// <returns>the Session Factory</returns>
         public new static ISessionFactory SessionFactory
@@ -39,7 +41,7 @@ namespace SuggestionBox.Data
         }
 
         /// <summary>
-        ///     This method will Initializes the database.
+        ///   This method will Initializes the database.
         /// </summary>
         /// <param name="initialization">The code to execute to Initialize Database</param>
         public override void InitializeDatabase(Action initialization)
