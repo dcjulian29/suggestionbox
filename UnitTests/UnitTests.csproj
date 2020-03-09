@@ -9,7 +9,6 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.5.0" />
     <PackageReference Include="System.Data.SQLite" Version="1.0.112" />
-    <PackageReference Include="TeamCity.VSTest.TestAdapter" Version="1.0.20" />
     <PackageReference Include="ToolKit" Version="2020.2.23.1" />
     <PackageReference Include="ToolKit.Data.NHibernate" Version="2020.2.23.1" />
     <PackageReference Include="ToolKit.Data.NHibernate.UnitTests" Version="2020.2.23.1" />
