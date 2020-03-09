@@ -84,7 +84,7 @@ namespace SuggestionBox.Data.Entities
         /// <summary>
         ///   Blocks this comment from being displayed.
         /// </summary>
-        public void Block()
+        public virtual void Block()
         {
             Blocked = true;
         }
@@ -92,7 +92,7 @@ namespace SuggestionBox.Data.Entities
         /// <summary>
         ///   Like the Comment.
         /// </summary>
-        public void Like()
+        public virtual void Like()
         {
             Liked++;
         }
