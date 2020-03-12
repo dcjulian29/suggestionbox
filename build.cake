@@ -135,8 +135,6 @@ Task("Version")
             OutputType = GitVersionOutput.Json
         });
 
-        Information($"SemVer= {gitversion.SemVer};\nAssemblySemVer = {gitversion.AssemblySemVer}");
-
         Information("Marking this build as version: " + version);
 
         var assemblyVersion = "0.0.0";;
@@ -148,7 +146,7 @@ Task("Version")
         CreateAssemblyInfo(buildDirectory + @"\CommonAssemblyInfo.cs", new AssemblyInfoSettings {
             Version = assemblyVersion,
             FileVersion = assemblyVersion,
-            InformationalVersion = version,
+            InformationalVersion = gitversion.FullBuildMetaData,
             Copyright = String.Format("(c) Julian Easterling {0}", DateTime.Now.Year),
             Company = String.Empty,
             Configuration = configuration
