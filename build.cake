@@ -185,7 +185,14 @@ Task("UnitTest")
     .IsDependentOn("Compile")
     .Does(() =>
     {
-        DotNetCoreTest(outputDirectory + "\\UnitTests.dll");
+        var dotNetTestSettings = new DotNetCoreTestSettings
+        {
+            Configuration = configuration,
+            NoBuild = true,
+            Logger = "console;verbosity=normal"
+        };
+
+        DotNetCoreTest(outputDirectory + "\\UnitTests.dll", dotNetTestSettings);
     });
 
 Task("Coverage")
@@ -197,7 +204,8 @@ Task("Coverage")
         var dotNetTestSettings = new DotNetCoreTestSettings
         {
             Configuration = configuration,
-            NoBuild = true
+            NoBuild = true,
+            Logger = "console;verbosity=normal"
         };
 
         var openCoverSettings = new OpenCoverSettings() { Register = "user" }
